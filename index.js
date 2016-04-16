@@ -20,11 +20,27 @@ var fields = {
     '*': true
 };
 
+var stringify = function (configs) {
+    var o = Array.isArray(configs) ? configs : [configs];
+    o.forEach(function (config) {
+        config.value = JSON.stringify(config.value);
+    });
+    return configs;
+};
+
+var parse = function (configs) {
+    var o = Array.isArray(configs) ? configs : [configs];
+    o.forEach(function (config) {
+        config.value = JSON.parse(config.value);
+    });
+    return configs;
+};
+
 /**
  * {"name": "serandives app"}
  */
 router.post('/configs', function (req, res) {
-    Config.create(req.body, function (err, config) {
+    Config.create(stringify(req.body), function (err, config) {
         if (err) {
             log.error(err);
             res.status(500).send({
@@ -39,7 +55,7 @@ router.post('/configs', function (req, res) {
 router.get('/configs/:name', function (req, res) {
     Config.findOne({
         name: req.params.name
-    })
+    }).lean()
         .exec(function (err, config) {
             if (err) {
                 log.error('config find error');
@@ -54,7 +70,7 @@ router.get('/configs/:name', function (req, res) {
                 });
                 return;
             }
-            res.send(sanitizer.export(config));
+            res.send(sanitizer.export(parse(config)));
         });
 });
 
@@ -71,6 +87,7 @@ router.get('/configs', function (req, res) {
         .skip(data.paging.start)
         .limit(data.paging.count)
         .sort(data.paging.sort)
+        .lean()
         .exec(function (err, configs) {
             if (err) {
                 //TODO: send proper HTTP code
@@ -80,7 +97,7 @@ router.get('/configs', function (req, res) {
                 });
                 return;
             }
-            res.send(configs);
+            res.send(parse(configs));
         });
 });
 

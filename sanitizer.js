@@ -3,7 +3,6 @@ module.exports.clean = function (o) {
 };
 
 module.exports.export = function (o) {
-    o = o.toJSON();
     delete o._id;
     delete o.__v;
     delete o.has;
