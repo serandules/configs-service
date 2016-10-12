@@ -43,9 +43,10 @@ router.post('/configs', function (req, res) {
     Config.create(stringify(req.body), function (err, config) {
         if (err) {
             log.error(err);
-            res.status(500).send({
-                error: true
-            });
+            res.status(500).send([{
+                code: 500,
+                message: 'Internal Server Error'
+            }]);
             return;
         }
         res.send(config);
@@ -58,16 +59,18 @@ router.get('/configs/:name', function (req, res) {
     }).lean()
         .exec(function (err, config) {
             if (err) {
-                log.error('config find error');
-                res.status(500).send({
-                    error: true
-                });
+                log.error(err);
+                res.status(500).send([{
+                    code: 500,
+                    message: 'Internal Server Error'
+                }]);
                 return;
             }
             if (!config) {
-                res.status(404).send({
-                    error: true
-                });
+                res.status(404).send([{
+                    code: 404,
+                    message: 'Config Not Found'
+                }]);
                 return;
             }
             res.send(sanitizer.export(parse(config)));
@@ -90,11 +93,11 @@ router.get('/configs', function (req, res) {
         .lean()
         .exec(function (err, configs) {
             if (err) {
-                //TODO: send proper HTTP code
-                log.error('config find error');
-                res.status(500).send({
-                    error: true
-                });
+                log.error(err);
+                res.status(500).send([{
+                    code: 500,
+                    message: 'Internal Server Error'
+                }]);
                 return;
             }
             res.send(parse(configs));
@@ -103,32 +106,32 @@ router.get('/configs', function (req, res) {
 
 router.delete('/configs/:id', function (req, res) {
     if (!mongutils.objectId(req.params.id)) {
-        res.status(404).send({
-            error: 'specified config cannot be found'
-        });
+        res.status(404).send([{
+            code: 404,
+            message: 'Config Not Found'
+        }]);
         return;
     }
     Config.findOne({
         _id: req.params.id
-    })
-        .exec(function (err, config) {
-            if (err) {
-                log.error('config find error');
-                res.status(500).send({
-                    error: 'error while retrieving config'
-                });
-                return;
-            }
-            if (!config) {
-                res.status(404).send({
-                    error: 'specified config cannot be found'
-                });
-                return;
-            }
-            config.remove();
-            res.send({
-                error: false
-            });
-        });
+    }).exec(function (err, config) {
+        if (err) {
+            log.error(err);
+            res.status(500).send([{
+                code: 500,
+                message: 'Internal Server Error'
+            }]);
+            return;
+        }
+        if (!config) {
+            res.status(404).send([{
+                code: 404,
+                message: 'Config Not Found'
+            }]);
+            return;
+        }
+        config.remove();
+        res.status(204).end();
+    });
 });
 
