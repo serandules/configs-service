@@ -83,10 +83,10 @@ router.get('/configs/:name', function (req, res) {
  */
 router.get('/configs', function (req, res) {
     var data = req.query.data ? JSON.parse(req.query.data) : {};
-    sanitizer.clean(data.criteria || (data.criteria = {}));
+    sanitizer.clean(data.query || (data.query = {}));
     utils.merge(data.paging || (data.paging = {}), paging);
     utils.merge(data.fields || (data.fields = {}), fields);
-    Config.find(data.criteria)
+    Config.find(data.query)
         .skip(data.paging.start)
         .limit(data.paging.count)
         .sort(data.paging.sort)
