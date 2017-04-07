@@ -1,4 +1,4 @@
-var log = require('logger')('config-service:test:create');
+var log = require('logger')('configs-service:test:create');
 var errors = require('errors');
 var should = require('should');
 var request = require('request');

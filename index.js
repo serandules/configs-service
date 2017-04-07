@@ -1,4 +1,4 @@
-var log = require('logger')('config-service');
+var log = require('logger')('configs-service');
 var express = require('express');
 var bodyParser = require('body-parser');
 
