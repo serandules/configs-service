@@ -11,7 +11,7 @@
     "body-parser": "1.17.1",
     "logger": "serandules/logger#master",
     "utils": "serandules/utils#master",
-    "configs": "serandules/configs#master",
+    "configs-model": "serandules/configs-model#master",
     "mongutils": "serandules/mongutils#master",
     "errors": "serandules/errors#master",
     "permission": "serandules/permission#master",

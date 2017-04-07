@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 var errors = require('errors');
 var utils = require('utils');
-var Configs = require('configs');
+var Config = require('configs-model');
 var mongutils = require('mongutils');
 var auth = require('auth');
 var serandi = require('serandi');
@@ -53,7 +53,7 @@ module.exports = function (router) {
      * {"name": "serandives app"}
      */
     /*router.post('/', function (req, res) {
-        Configs.create(stringify(req.body), function (err, config) {
+        Config.create(stringify(req.body), function (err, config) {
             if (err) {
                 log.error(err);
                 res.status(500).send({
@@ -67,7 +67,7 @@ module.exports = function (router) {
     });*/
 
     router.get('/:name', function (req, res) {
-        Configs.findOne({
+        Config.findOne({
             name: req.params.name
         }).lean()
             .exec(function (err, config) {
@@ -91,7 +91,7 @@ module.exports = function (router) {
         sanitizer.clean(data.query || (data.query = {}));
         utils.merge(data.paging || (data.paging = {}), paging);
         utils.merge(data.fields || (data.fields = {}), fields);
-        Configs.find(data.query)
+        Config.find(data.query)
             .skip(data.paging.start)
             .limit(data.paging.count)
             .sort(data.paging.sort)
@@ -117,7 +117,7 @@ module.exports = function (router) {
             });
             return;
         }
-        Configs.findOne({
+        Config.findOne({
             _id: req.params.id
         }).exec(function (err, config) {
             if (err) {
