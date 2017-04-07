@@ -1,10 +1,10 @@
-var log = require('logger')('configs-service');
+var log = require('logger')('service-configs');
 var express = require('express');
 var bodyParser = require('body-parser');
 
 var errors = require('errors');
 var utils = require('utils');
-var Config = require('configs-model');
+var Config = require('model-configs');
 var mongutils = require('mongutils');
 var auth = require('auth');
 var serandi = require('serandi');
