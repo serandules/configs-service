@@ -9,7 +9,6 @@ var mongutils = require('mongutils');
 var auth = require('auth');
 var serandi = require('serandi');
 var serand = require('serand');
-var locate = require('locate');
 
 var sanitizer = require('./sanitizer');
 
@@ -23,7 +22,6 @@ module.exports = function (router) {
         hybrid: []
     }));
     router.use(bodyParser.json());
-    router.use(locate('/apis/v'));
 
     var paging = {
         start: 0,
@@ -54,7 +52,7 @@ module.exports = function (router) {
     /**
      * {"name": "serandives app"}
      */
-    router.post('/', function (req, res) {
+    /*router.post('/', function (req, res) {
         Config.create(stringify(req.body), function (err, config) {
             if (err) {
                 log.error(err);
@@ -66,7 +64,7 @@ module.exports = function (router) {
             }
             res.send(config);
         });
-    });
+    });*/
 
     router.get('/:name', function (req, res) {
         Config.findOne({
@@ -75,18 +73,10 @@ module.exports = function (router) {
             .exec(function (err, config) {
                 if (err) {
                     log.error(err);
-                    res.status(500).send({
-                        code: errors.serverError,
-                        message: 'Internal Server Error'
-                    });
-                    return;
+                    return res.pond(errors.serverError());
                 }
                 if (!config) {
-                    res.status(404).send({
-                        code: errors.notFound,
-                        message: 'Config Not Found'
-                    });
-                    return;
+                    return res.pond(errors.notFound('Config'));
                 }
                 res.send(sanitizer.export(parse(config)));
             });
@@ -96,7 +86,7 @@ module.exports = function (router) {
     /**
      * /users?data={}
      */
-    router.get('/', function (req, res) {
+    /*router.get('/', function (req, res) {
         var data = req.query.data ? JSON.parse(req.query.data) : {};
         sanitizer.clean(data.query || (data.query = {}));
         utils.merge(data.paging || (data.paging = {}), paging);
@@ -117,9 +107,9 @@ module.exports = function (router) {
                 }
                 res.send(parse(configs));
             });
-    });
+    });*/
 
-    router.delete('/:id', function (req, res) {
+    /*router.delete('/:id', function (req, res) {
         if (!mongutils.objectId(req.params.id)) {
             res.status(404).send({
                 code: errors.notFound,
@@ -148,5 +138,5 @@ module.exports = function (router) {
             config.remove();
             res.status(204).end();
         });
-    });
+    });*/
 };

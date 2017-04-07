@@ -1,6 +1,6 @@
 {
-  "name": "config-service",
-  "description": "config-service",
+  "name": "configs-service",
+  "description": "configs-service",
   "version": "0.0.0",
   "author": {
     "name": "serandives",
@@ -11,15 +11,21 @@
     "body-parser": "1.17.1",
     "logger": "serandules/logger#master",
     "utils": "serandules/utils#master",
-    "config": "serandules/config#master",
+    "config": "serandules/configs#master",
     "mongutils": "serandules/mongutils#master",
     "errors": "serandules/errors#master",
     "permission": "serandules/permission#master",
     "auth": "serandules/auth#master",
     "serandi": "serandules/serandi#master"
   },
+  "devDependencies": {
+    "mocha": "3.2.0",
+    "should": "11.2.1",
+    "request": "2.81.0",
+    "server": "serandules/pot#master"
+  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/serandules/config-service.git"
+    "url": "git://github.com/serandules/configs-service.git"
   }
 }
