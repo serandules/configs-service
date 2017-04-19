@@ -8,7 +8,6 @@ var Config = require('model-configs');
 var mongutils = require('mongutils');
 var auth = require('auth');
 var serandi = require('serandi');
-var serand = require('serand');
 
 var sanitizer = require('./sanitizer');
 
