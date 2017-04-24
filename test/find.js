@@ -15,7 +15,7 @@ describe('POST /users', function () {
 
     it('GET /configs/boot', function (done) {
         request({
-            uri: pot.resolve('/apis/v/configs/boot'),
+            uri: pot.resolve('accounts', '/apis/v/configs/boot'),
             method: 'GET',
             json: {}
         }, function (e, r, b) {
@@ -34,7 +34,7 @@ describe('POST /users', function () {
 
     it('GET /configs/other', function (done) {
         request({
-            uri: pot.resolve('/apis/v/configs/other'),
+            uri: pot.resolve('accounts', '/apis/v/configs/other'),
             method: 'GET',
             json: {}
         }, function (e, r, b) {
