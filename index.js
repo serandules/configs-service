@@ -75,7 +75,7 @@ module.exports = function (router) {
                     return res.pond(errors.serverError());
                 }
                 if (!config) {
-                    return res.pond(errors.notFound('Config'));
+                    return res.pond(errors.notFound());
                 }
                 res.send(sanitizer.export(parse(config)));
             });
