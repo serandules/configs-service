@@ -11,6 +11,32 @@ var serandi = require('serandi');
 
 var sanitizer = require('./sanitizer');
 
+var paging = {
+    start: 0,
+    count: 10,
+    sort: ''
+};
+
+var fields = {
+    '*': true
+};
+
+var stringify = function (configs) {
+    var o = Array.isArray(configs) ? configs : [configs];
+    o.forEach(function (config) {
+        config.value = JSON.stringify(config.value);
+    });
+    return configs;
+};
+
+var parse = function (configs) {
+    var o = Array.isArray(configs) ? configs : [configs];
+    o.forEach(function (config) {
+        config.value = JSON.parse(config.value);
+    });
+    return configs;
+};
+
 module.exports = function (router) {
     router.use(serandi.pond);
     router.use(serandi.ctx);
@@ -21,32 +47,6 @@ module.exports = function (router) {
         hybrid: []
     }));
     router.use(bodyParser.json());
-
-    var paging = {
-        start: 0,
-        count: 10,
-        sort: ''
-    };
-
-    var fields = {
-        '*': true
-    };
-
-    var stringify = function (configs) {
-        var o = Array.isArray(configs) ? configs : [configs];
-        o.forEach(function (config) {
-            config.value = JSON.stringify(config.value);
-        });
-        return configs;
-    };
-
-    var parse = function (configs) {
-        var o = Array.isArray(configs) ? configs : [configs];
-        o.forEach(function (config) {
-            config.value = JSON.parse(config.value);
-        });
-        return configs;
-    };
 
     /**
      * {"name": "serandives app"}
