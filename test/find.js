@@ -4,7 +4,7 @@ var should = require('should');
 var request = require('request');
 var pot = require('pot');
 
-describe('POST /users', function () {
+describe('POST /configs', function () {
     before(function (done) {
         pot.start(done);
     });
