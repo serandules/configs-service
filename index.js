@@ -41,12 +41,9 @@ module.exports = function (router) {
     router.use(serandi.pond);
     router.use(serandi.ctx);
     router.use(auth({
-        GET: {
-            open: [
-                '^\/boot$'
-            ],
-            hybrid: []
-        }
+        GET: [
+            '^\/boot$'
+        ]
     }));
     router.use(bodyParser.json());
 
