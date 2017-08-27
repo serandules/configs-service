@@ -2,10 +2,10 @@ module.exports.clean = function (o) {
     return o;
 };
 
-module.exports.export = function (o) {
+module.exports.found = function (o) {
     delete o._id;
     delete o.__v;
-    delete o.has;
-    delete o.allowed;
+    delete o.user;
+    delete o.permissions;
     return o;
 };

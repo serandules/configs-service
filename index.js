@@ -42,7 +42,8 @@ module.exports = function (router) {
     router.use(serandi.ctx);
     router.use(auth({
         GET: [
-            '^\/boot$'
+            '^\/boot$',
+            '^\/groups$'
         ]
     }));
     router.use(bodyParser.json());
@@ -64,6 +65,7 @@ module.exports = function (router) {
         });
     });*/
 
+    // TODO: add permissions for all configs to prevent unwanted access
     router.get('/:name', function (req, res) {
         Configs.findOne({
             name: req.params.name
@@ -76,7 +78,7 @@ module.exports = function (router) {
                 if (!config) {
                     return res.pond(errors.notFound());
                 }
-                res.send(sanitizer.export(parse(config)));
+                res.send(sanitizer.found(parse(config)));
             });
     });
 
