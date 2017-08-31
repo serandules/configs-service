@@ -5,14 +5,6 @@ var request = require('request');
 var pot = require('pot');
 
 describe('POST /configs', function () {
-    before(function (done) {
-        pot.start(done);
-    });
-
-    after(function (done) {
-        pot.stop(done);
-    });
-
     it('GET /configs/boot', function (done) {
         request({
             uri: pot.resolve('accounts', '/apis/v/configs/boot'),
