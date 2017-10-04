@@ -1,7 +1,5 @@
 var nconf = require('nconf');
 
 nconf.overrides({
-    'services': [
-        {"path": __dirname + '/..', "domain": "accounts", "prefix": "/apis/v/configs"}
-    ]
+    "LOCAL_CONFIGS": __dirname + "/..:accounts:/apis/v/configs"
 });
