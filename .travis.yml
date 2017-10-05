@@ -4,10 +4,10 @@ node_js:
 env:
   global:
     - CXX=g++-4.8
-    - env=test
+    - ENV=travis
 addons:
   hosts:
-    - test.serandives.com
+    - travis.serandives.com
   apt:
     sources:
       - ubuntu-toolchain-r-test
