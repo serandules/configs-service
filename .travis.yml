@@ -15,5 +15,5 @@ addons:
       - g++-4.8
 services:
   - mongodb
-before_script
+before_script:
   - node install.js
