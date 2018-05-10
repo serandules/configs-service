@@ -7,6 +7,7 @@ var utils = require('utils');
 var Configs = require('model-configs');
 var mongutils = require('mongutils');
 var auth = require('auth');
+var throttle = require('throttle');
 var serandi = require('serandi');
 
 var sanitizer = require('./sanitizer');
@@ -45,6 +46,7 @@ module.exports = function (router) {
             '^\/groups$'
         ]
     }));
+    router.use(throttle({name: 'configs'}));
     router.use(bodyParser.json());
 
     /**
