@@ -46,7 +46,7 @@ module.exports = function (router) {
             '^\/groups$'
         ]
     }));
-    router.use(throttle({name: 'configs'}));
+    router.use(throttle.apis('configs'));
     router.use(bodyParser.json());
 
     /**
