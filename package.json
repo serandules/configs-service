@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "4.*",
     "body-parser": "1.17.1",
+    "async": "1.*",
     "logger": "serandules/logger#master",
     "utils": "serandules/utils#master",
     "model-configs": "serandules/model-configs#master",
