@@ -65,41 +65,4 @@ describe('POST /configs', function () {
       done();
     });
   });
-
-  it('GET /configs/boot throttle', function (done) {
-    var success = 0
-    var failure = 0
-    async.times(11, function (i, timesDone) {
-      request({
-        uri: pot.resolve('accounts', '/apis/v/configs/boot'),
-        method: 'GET',
-        json: {}
-      }, function (e, r, b) {
-        if (e) {
-          return timesDone(e);
-        }
-        var status = r.statusCode;
-        if (status === 200) {
-          success++;
-          return timesDone();
-        }
-        if (status === 429) {
-          failure++;
-          return timesDone();
-        }
-        timesDone(new Error(status));
-      });
-    }, function (err) {
-      if (err) {
-        return done(err);
-      }
-      if (success !== 10) {
-        return done(new Error('success !== 10'))
-      }
-      if (failure !== 1) {
-        return done(new Error('failure !== 1'))
-      }
-      done()
-    })
-  });
 });
