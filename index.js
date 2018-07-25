@@ -73,7 +73,7 @@ module.exports = function (router) {
         }).lean()
             .exec(function (err, config) {
                 if (err) {
-                    log.error(err);
+                    log.error('configs:find-one', err);
                     return res.pond(errors.serverError());
                 }
                 if (!config) {
