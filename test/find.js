@@ -5,7 +5,7 @@ var request = require('request');
 var async = require('async');
 var pot = require('pot');
 
-describe('POST /configs', function () {
+describe('GET /configs', function () {
   it('GET /configs/boot', function (done) {
     request({
       uri: pot.resolve('accounts', '/apis/v/configs/boot'),
