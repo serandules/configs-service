@@ -1,4 +1,5 @@
 var log = require('logger')('service-configs:test:create');
+var nconf = require('nconf');
 var errors = require('errors');
 var should = require('should');
 var request = require('request');
@@ -6,61 +7,79 @@ var async = require('async');
 var pot = require('pot');
 
 describe('GET /configs', function () {
-  it('GET /configs/boot', function (done) {
+  var client;
+  before(function (done) {
+    pot.client(function (err, c) {
+      if (err) {
+        return done(err);
+      }
+      client = c;
+      done();
+    });
+  });
+
+  it('anonymous', function (done) {
     request({
-      uri: pot.resolve('accounts', '/apis/v/configs/boot'),
+      uri: pot.resolve('accounts', '/apis/v/configs'),
       method: 'GET',
-      json: {}
+      json: true
     }, function (e, r, b) {
       if (e) {
         return done(e);
       }
       r.statusCode.should.equal(200);
       should.exist(b);
-      should.exist(b.name);
-      b.name.should.equal('boot');
-      should.exist(b.value);
-      should.exist(b.value.clients);
-      should.exist(b.value.clients.serandives);
+      should.exist(b.length);
+      b.length.should.equal(3);
+      b.forEach(function (config) {
+        ['boot', 'groups', 'boot-autos'].indexOf(config.name).should.be.above(-1);
+      });
       done();
     });
   });
 
-  it('GET /configs/groups', function (done) {
+  it('admin', function (done) {
     request({
-      uri: pot.resolve('accounts', '/apis/v/configs/groups'),
+      uri: pot.resolve('accounts', '/apis/v/configs'),
       method: 'GET',
-      json: {}
+      auth: {
+        bearer: client.admin.token
+      },
+      json: true
     }, function (e, r, b) {
       if (e) {
         return done(e);
       }
       r.statusCode.should.equal(200);
       should.exist(b);
-      should.exist(b.name);
-      b.name.should.equal('groups');
-      should.exist(b.value);
-      should.exist(b.value.length);
-      b.value.length.should.equal(1);
-      var group = b.value[0];
-      should.exist(group.name);
-      group.name.should.equal('public');
+      should.exist(b.length);
+      b.length.should.equal(3);
+      b.forEach(function (config) {
+        ['boot', 'groups', 'boot-autos'].indexOf(config.name).should.be.above(-1);
+      });
       done();
     });
   });
 
-  it('GET /configs/other', function (done) {
+  it('authenticated', function (done) {
     request({
-      uri: pot.resolve('accounts', '/apis/v/configs/other'),
+      uri: pot.resolve('accounts', '/apis/v/configs'),
       method: 'GET',
-      json: {}
+      auth: {
+        bearer: client.users[0].token
+      },
+      json: true
     }, function (e, r, b) {
       if (e) {
         return done(e);
       }
-      r.statusCode.should.equal(errors.unauthorized().status);
+      r.statusCode.should.equal(200);
       should.exist(b);
-      b.code.should.equal(errors.unauthorized().data.code);
+      should.exist(b.length);
+      b.length.should.equal(3);
+      b.forEach(function (config) {
+        ['boot', 'groups', 'boot-autos'].indexOf(config.name).should.be.above(-1);
+      });
       done();
     });
   });

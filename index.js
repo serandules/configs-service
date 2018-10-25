@@ -10,25 +10,9 @@ var auth = require('auth');
 var throttle = require('throttle');
 var serandi = require('serandi');
 
-var sanitizer = require('./sanitizer');
-
-var paging = {
-    start: 0,
-    count: 10,
-    sort: ''
-};
-
-var fields = {
-    '*': true
-};
-
-var stringify = function (configs) {
-    var o = Array.isArray(configs) ? configs : [configs];
-    o.forEach(function (config) {
-        config.value = JSON.stringify(config.value);
-    });
-    return configs;
-};
+var pub = require('./public');
+var validators = require('./validators');
+var sanitizers = require('./sanitizers');
 
 var parse = function (configs) {
     var o = Array.isArray(configs) ? configs : [configs];
@@ -38,106 +22,41 @@ var parse = function (configs) {
     return configs;
 };
 
-module.exports = function (router) {
+module.exports = function (router, done) {
+  pub.find(function (err, configs) {
+    if (err) {
+      return done(err);
+    }
+    var allowed = ['^\/$'];
+    configs.forEach(function (config) {
+      allowed.push('^\/' + config.id + '$');
+    });
+    router.use(serandi.many);
     router.use(serandi.ctx);
     router.use(auth({
-        GET: [
-            '^\/boot$',
-            '^\/groups$'
-        ]
+      GET: allowed
     }));
     router.use(throttle.apis('configs'));
     router.use(bodyParser.json());
 
-    /**
-     * {"name": "serandives app"}
-     */
-    /*router.post('/', function (req, res) {
-        Configs.create(stringify(req.body), function (err, config) {
-            if (err) {
-                log.error(err);
-                res.status(500).send({
-                    code: errors.serverError,
-                    message: 'Internal Server Error'
-                });
-                return;
-            }
-            res.send(config);
-        });
-    });*/
-
-    // TODO: add permissions for all configs to prevent unwanted access
-    router.get('/:name', function (req, res) {
-        Configs.findOne({
-            name: req.params.name
-        }).lean()
-            .exec(function (err, config) {
-                if (err) {
-                    log.error('configs:find-one', err);
-                    return res.pond(errors.serverError());
-                }
-                if (!config) {
-                    return res.pond(errors.notFound());
-                }
-                res.send(sanitizer.found(parse(config)));
-            });
+    router.get('/:id', validators.findOne, sanitizers.findOne, function (req, res, next) {
+      mongutils.findOne(Configs, req.query, function (err, config) {
+        if (err) {
+          return next(err);
+        }
+        res.send(config);
+      });
     });
 
-
-    /**
-     * /users?data={}
-     */
-    /*router.get('/', function (req, res) {
-        var data = req.query.data ? JSON.parse(req.query.data) : {};
-        sanitizer.clean(data.query || (data.query = {}));
-        utils.merge(data.paging || (data.paging = {}), paging);
-        utils.merge(data.fields || (data.fields = {}), fields);
-        Configs.find(data.query)
-            .skip(data.paging.start)
-            .limit(data.paging.count)
-            .sort(data.paging.sort)
-            .lean()
-            .exec(function (err, configs) {
-                if (err) {
-                    log.error(err);
-                    res.status(500).send({
-                        code: errors.serverError,
-                        message: 'Internal Server Error'
-                    });
-                    return;
-                }
-                res.send(parse(configs));
-            });
-    });*/
-
-    /*router.delete('/:id', function (req, res) {
-        if (!mongutils.objectId(req.params.id)) {
-            res.status(404).send({
-                code: errors.notFound,
-                message: 'Configs Not Found'
-            });
-            return;
+    router.get('/', validators.find, sanitizers.find, function (req, res, next) {
+      mongutils.find(Configs, req.query.data, function (err, vehicles, paging) {
+        if (err) {
+          return next(err);
         }
-        Configs.findOne({
-            _id: req.params.id
-        }).exec(function (err, config) {
-            if (err) {
-                log.error(err);
-                res.status(500).send({
-                    code: errors.serverError,
-                    message: 'Internal Server Error'
-                });
-                return;
-            }
-            if (!config) {
-                res.status(404).send({
-                    code: errors.notFound,
-                    message: 'Configs Not Found'
-                });
-                return;
-            }
-            config.remove();
-            res.status(204).end();
-        });
-    });*/
+        res.many(vehicles, paging);
+      });
+    });
+
+    done();
+  });
 };
