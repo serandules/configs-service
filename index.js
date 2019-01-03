@@ -49,11 +49,11 @@ module.exports = function (router, done) {
     router.get('/',
       serandi.find(Configs),
       function (req, res, next) {
-      model.find(req.ctx, function (err, vehicles, paging) {
+      model.find(req.ctx, function (err, configs, paging) {
         if (err) {
           return next(err);
         }
-        res.many(vehicles, paging);
+        res.many(configs, paging);
       });
     });
 
