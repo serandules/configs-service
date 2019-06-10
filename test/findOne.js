@@ -67,9 +67,11 @@ describe('GET /configs/:id', function () {
       b.name.should.equal('groups');
       should.exist(b.value);
       should.exist(b.value.length);
-      var group = b.value[0];
-      should.exist(group.name);
-      group.name.should.equal('public');
+      b.value.length.should.equal(3);
+      b.value.forEach(function (group) {
+        should.exist(group.name);
+        ['public', 'anonymous', 'admin'].indexOf(group.name).should.not.equal(-1);
+      });
       done();
     });
   });
