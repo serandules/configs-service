@@ -30,9 +30,11 @@ describe('GET /configs', function () {
       r.statusCode.should.equal(200);
       should.exist(b);
       should.exist(b.length);
-      b.length.should.equal(2);
       b.forEach(function (config) {
-        ['boot', 'groups'].indexOf(config.name).should.be.above(-1);
+        if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
+          return;
+        }
+        ['boot', 'groups', 'menus'].indexOf(config.name).should.be.above(-1);
       });
       done();
     });
@@ -53,9 +55,11 @@ describe('GET /configs', function () {
       r.statusCode.should.equal(200);
       should.exist(b);
       should.exist(b.length);
-      b.length.should.equal(2);
       b.forEach(function (config) {
-        ['boot', 'groups'].indexOf(config.name).should.be.above(-1);
+        if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
+          return;
+        }
+        ['boot', 'groups', 'menus'].indexOf(config.name).should.be.above(-1);
       });
       done();
     });
@@ -76,9 +80,11 @@ describe('GET /configs', function () {
       r.statusCode.should.equal(200);
       should.exist(b);
       should.exist(b.length);
-      b.length.should.equal(2);
       b.forEach(function (config) {
-        ['boot', 'groups'].indexOf(config.name).should.be.above(-1);
+        if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
+          return;
+        }
+        ['boot', 'groups', 'menus'].indexOf(config.name).should.be.above(-1);
       });
       done();
     });

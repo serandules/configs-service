@@ -76,6 +76,43 @@ describe('GET /configs/:id', function () {
     });
   });
 
+  it('GET /configs/:menu', function (done) {
+    request({
+      uri: pot.resolve('accounts', '/apis/v/configs/' + find('menus').id),
+      method: 'GET',
+      json: true
+    }, function (e, r, b) {
+      if (e) {
+        return done(e);
+      }
+      r.statusCode.should.equal(200);
+      should.exist(b);
+      should.exist(b.name);
+      b.name.should.equal('menus');
+      should.exist(b.value);
+      var names = Object.keys(b.value);
+      should.exist(names.length);
+
+      async.each(names, function (name, eachDone) {
+        request({
+          uri: pot.resolve('accounts', '/apis/v/configs/' + b.value[name]),
+          method: 'GET',
+          json: true
+        }, function (e, r, b) {
+          if (e) {
+            return eachDone(e);
+          }
+          r.statusCode.should.equal(200);
+          should.exist(b);
+          should.exist(b.name);
+          b.name.should.equal(name);
+          should.exist(b.value);
+          eachDone();
+        });
+      }, done);
+    });
+  });
+
   it('GET /configs/other', function (done) {
     request({
       uri: pot.resolve('accounts', '/apis/v/configs/other'),
