@@ -5,24 +5,10 @@ var Configs = require('model-configs');
 var auth = require('auth');
 var throttle = require('throttle');
 var serandi = require('serandi');
-var utils = require('utils');
 
 var model = require('model');
 
 var pub = require('./public');
-
-var cache = function (config, done) {
-  utils.client(function (err, client) {
-    if (err) {
-      return done(err);
-    }
-    config = utils.json(config);
-    if (config.user !== client.user) {
-      return done();
-    }
-    utils.cache('configs:' + client.user + ':' + config.name, JSON.stringify(config.value), done);
-  });
-};
 
 module.exports = function (router, done) {
   pub.find(function (err, configs) {
@@ -71,12 +57,7 @@ module.exports = function (router, done) {
           if (err) {
             return next(err);
           }
-          cache(config, function (err) {
-            if (err) {
-              return next(err);
-            }
-            res.locate(config.id).status(201).send(config);
-          });
+          res.locate(config.id).status(201).send(config);
         });
       });
 
@@ -95,12 +76,7 @@ module.exports = function (router, done) {
           if (err) {
             return next(err);
           }
-          cache(config, function (err) {
-            if (err) {
-              return next(err);
-            }
-            res.locate(config.id).status(200).send(config);
-          });
+          res.locate(config.id).status(200).send(config);
         });
       });
 

@@ -14,7 +14,7 @@ exports.find = function (done) {
       return done(new Error('!root'));
     }
     Configs.find({
-      name: {$in: ['boot', 'boot-autos', 'groups', 'menus']},
+      name: {$in: ['boot', 'boot-autos', 'groups', 'menus', 'vehicle-makes', 'aliases']},
       user: root.id
     }, function (err, configs) {
       if (err) {
