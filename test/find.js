@@ -6,6 +6,26 @@ var request = require('request');
 var async = require('async');
 var pot = require('pot');
 
+var configs = [
+  'boot',
+  'groups',
+  'menus',
+  'vehicle-makes',
+  'vehicle-makes',
+  'menus',
+  'menus-jobs-affiliates',
+  'menus-realestates-affiliates',
+  'menus-autos-secondary',
+  'menus-autos-primary',
+  'menus-autos-affiliates',
+  'menus-accounts-affiliates',
+  'menus-admin',
+  'menus-user',
+  'menus-www-affiliates',
+  'menus-www',
+  'aliases'
+];
+
 describe('GET /configs', function () {
   var client;
   before(function (done) {
@@ -31,10 +51,11 @@ describe('GET /configs', function () {
       should.exist(b);
       should.exist(b.length);
       b.forEach(function (config) {
+        console.log(config.name)
         if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
           return;
         }
-        ['boot', 'groups', 'menus'].indexOf(config.name).should.be.above(-1);
+        configs.indexOf(config.name).should.be.above(-1);
       });
       done();
     });
@@ -59,7 +80,7 @@ describe('GET /configs', function () {
         if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
           return;
         }
-        ['boot', 'groups', 'menus'].indexOf(config.name).should.be.above(-1);
+        configs.indexOf(config.name).should.be.above(-1);
       });
       done();
     });
@@ -84,7 +105,7 @@ describe('GET /configs', function () {
         if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
           return;
         }
-        ['boot', 'groups', 'menus'].indexOf(config.name).should.be.above(-1);
+        configs.indexOf(config.name).should.be.above(-1);
       });
       done();
     });
