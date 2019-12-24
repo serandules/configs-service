@@ -5,7 +5,7 @@ var Configs = require('model-configs');
 
 exports.find = function (done) {
   Users.findOne({
-    email: utils.root()
+    email: utils.adminEmail()
   }, function (err, root) {
     if (err) {
       return done(err);
