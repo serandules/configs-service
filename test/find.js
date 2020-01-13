@@ -8,6 +8,7 @@ var pot = require('pot');
 
 var configs = [
   'boot',
+  'users',
   'groups',
   'menus',
   'vehicle-makes',
