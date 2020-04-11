@@ -52,7 +52,6 @@ describe('GET /configs', function () {
       should.exist(b);
       should.exist(b.length);
       b.forEach(function (config) {
-        console.log(config.name)
         if (config.name.indexOf('menus-') === 0 || config.name.indexOf('tests-') === 0) {
           return;
         }
