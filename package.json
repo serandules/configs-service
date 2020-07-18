@@ -13,7 +13,7 @@
     "express": "4.*",
     "body-parser": "1.17.1",
     "async": "1.*",
-    "lodash": "4.17.4",
+    "lodash": "4.17.19",
     "nconf": "0.10.0",
     "logger": "serandules/logger#master",
     "utils": "serandules/utils#master",
