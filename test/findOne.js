@@ -34,7 +34,7 @@ describe('GET /configs/:id', function () {
 
   it('GET /configs/boot', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs/' + find('boot').id),
+      uri: pot.resolve('apis', '/v/configs/' + find('boot').id),
       method: 'GET',
       json: true
     }, function (e, r, b) {
@@ -54,7 +54,7 @@ describe('GET /configs/:id', function () {
 
   it('GET /configs/groups', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs/' + find('groups').id),
+      uri: pot.resolve('apis', '/v/configs/' + find('groups').id),
       method: 'GET',
       json: true
     }, function (e, r, b) {
@@ -78,7 +78,7 @@ describe('GET /configs/:id', function () {
 
   it('GET /configs/:menu', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs/' + find('menus').id),
+      uri: pot.resolve('apis', '/v/configs/' + find('menus').id),
       method: 'GET',
       json: true
     }, function (e, r, b) {
@@ -95,7 +95,7 @@ describe('GET /configs/:id', function () {
 
       async.each(names, function (name, eachDone) {
         request({
-          uri: pot.resolve('www', '/apis/v/configs/' + b.value[name]),
+          uri: pot.resolve('apis', '/v/configs/' + b.value[name]),
           method: 'GET',
           json: true
         }, function (e, r, b) {
@@ -115,7 +115,7 @@ describe('GET /configs/:id', function () {
 
   it('GET /configs/other', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs/other'),
+      uri: pot.resolve('apis', '/v/configs/other'),
       method: 'GET',
       json: {}
     }, function (e, r, b) {

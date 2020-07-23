@@ -24,7 +24,7 @@ describe('POST /configs', function () {
 
   it('with no media type', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'POST',
       auth: {
         bearer: client.users[0].token
@@ -45,7 +45,7 @@ describe('POST /configs', function () {
 
   it('with unsupported media type', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'POST',
       headers: {
         'Content-Type': 'application/xml'
@@ -69,7 +69,7 @@ describe('POST /configs', function () {
 
   it('without name', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'POST',
       json: {
         value: 'v1'
@@ -92,7 +92,7 @@ describe('POST /configs', function () {
 
   it('without value', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'POST',
       json: {
         name: 'primary'
@@ -121,7 +121,7 @@ describe('POST /configs', function () {
 
   it('with a huge value', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'POST',
       json: {
         name: 'tests-c3',
@@ -145,7 +145,7 @@ describe('POST /configs', function () {
 
   it('valid', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'POST',
       json: data,
       auth: {
@@ -162,9 +162,9 @@ describe('POST /configs', function () {
       b.name.should.equal(data.name);
       b.value.should.equal(data.value);
       should.exist(r.headers['location']);
-      r.headers['location'].should.equal(pot.resolve('www', '/apis/v/configs/' + b.id));
+      r.headers['location'].should.equal(pot.resolve('apis', '/v/configs/' + b.id));
       request({
-        uri: pot.resolve('www', '/apis/v/configs'),
+        uri: pot.resolve('apis', '/v/configs'),
         method: 'POST',
         json: data,
         auth: {

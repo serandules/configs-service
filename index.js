@@ -28,6 +28,7 @@ module.exports = function (router, done) {
     router.use(bodyParser.json());
 
     router.get('/:id',
+      serandi.id,
       serandi.findOne(Configs),
       function (req, res, next) {
         model.findOne(req.ctx, function (err, config) {
@@ -62,6 +63,7 @@ module.exports = function (router, done) {
       });
 
     router.post('/:id',
+      serandi.id,
       serandi.json,
       serandi.transit({
         workflow: 'model',
@@ -69,6 +71,7 @@ module.exports = function (router, done) {
       }));
 
     router.put('/:id',
+      serandi.id,
       serandi.json,
       serandi.update(Configs),
       function (req, res, next) {

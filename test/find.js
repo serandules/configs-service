@@ -41,7 +41,7 @@ describe('GET /configs', function () {
 
   it('anonymous', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'GET',
       json: true
     }, function (e, r, b) {
@@ -63,7 +63,7 @@ describe('GET /configs', function () {
 
   it('admin', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'GET',
       auth: {
         bearer: client.admin.token
@@ -88,7 +88,7 @@ describe('GET /configs', function () {
 
   it('authenticated', function (done) {
     request({
-      uri: pot.resolve('www', '/apis/v/configs'),
+      uri: pot.resolve('apis', '/v/configs'),
       method: 'GET',
       auth: {
         bearer: client.users[0].token
